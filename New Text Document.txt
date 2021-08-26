@@ -1,0 +1,17 @@
+for key,df in data.groupby(['year','month','Day','hour']):
+    count = count + 1
+    os.makedirs(f"{key[0]}/{key[1]}/{key[2]}/{key[3]}")
+    df.to_csv(f"{key[0]}/{key[1]}/{key[2]}/{key[3]}/data{count}.csv",index=False)
+    
+import datetime
+def return_month(monthinteger):
+    month = datetime.date(1900, monthinteger, 1).strftime('%B')
+    return month
+    
+    
+data['Day'] = data['ts'].apply(lambda x : x.day)
+data['hour'] = data['ts'].apply(lambda x : x.hour)
+data['month'] = data['ts'].apply(lambda x : x.month)
+data['year'] = data['ts'].apply(lambda x : x.year)
+df_unpivoted = data.melt( id_vars=['ts'], value_vars=['co2','humidity','pm10','pm25',
+                                                      'temperature','voc','Cooling_valve_status','Heating_valve_status'])
